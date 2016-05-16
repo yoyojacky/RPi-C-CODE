@@ -13,4 +13,11 @@ If you have already used the clone operation for the first time, then
 
 ####cd wiringPi
 ####git pull origin
-####git clone https://github.com/yoyojacky/Raspberry-C-code.git
+####git clone https://github.com/yoyojacky/RPi-C-CODE.git
+
+and then:
+####cd RPi-C-CODE/
+####gcc -o xxx  xxx.c  -lwiringPi 
+####sudo ./xxx
+
+## Have Fun :)
