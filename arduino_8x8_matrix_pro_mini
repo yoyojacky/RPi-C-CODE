@@ -1,0 +1,114 @@
+//定义行
+int R[8] = {10, 15, 9, 13, 2, 8, 3, 6};
+//定义列
+int C[8] = {14, 4, 5, 11, 7, 12, 16, 17};
+//显示画面
+uint8_t Map0[][8] = {
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 1, 1, 0, 0, 1, 1, 0,
+  0, 1, 1, 0, 0, 1, 1, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 1, 0, 0, 0, 0, 1, 0,
+  0, 1, 0, 0, 0, 0, 1, 0,
+  0, 0, 1, 1, 1, 1, 0, 0,
+  0, 0, 0, 1, 1, 0, 0, 0,
+};
+
+uint8_t Map1[][8] = {
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 1, 1, 0, 0, 1, 1, 0,
+  0, 1, 1, 0, 0, 1, 1, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  1, 0, 0, 0, 0, 0, 0, 1,
+  0, 1, 1, 1, 1, 1, 1, 0,
+  0, 0, 1, 0, 0, 1, 0, 0,
+  0, 0, 0, 1, 1, 0, 0, 0,
+};
+uint8_t Map3[][8] = {
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 0, 0, 0, 0,
+  0, 1, 1, 1, 0, 0, 0, 0,
+  0, 0, 1, 0, 0, 0, 0, 0,
+  0, 0, 1, 0, 0, 0, 0, 0,
+};
+uint8_t Map4[][8] = {
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 1, 1, 0, 0, 1, 1, 0,
+  1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1,
+  0, 1, 1, 1, 1, 1, 1, 0,
+  0, 0, 1, 1, 1, 1, 0, 0,
+  0, 0, 0, 1, 1, 0, 0, 0,
+};
+uint8_t Map5[][8] = {
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 1, 1, 0, 0, 1, 1, 0,
+  0, 1, 1, 1, 1, 1, 1, 0,
+  0, 1, 1, 1, 1, 1, 1, 0,
+  0, 0, 1, 1, 1, 1, 0, 0,
+  0, 0, 0, 1, 1, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0,
+};
+
+void setup() {
+  for (int i = 0; i < 8; i++)
+  {
+    pinMode(R[i], OUTPUT);
+    pinMode(C[i], OUTPUT);
+    digitalWrite(R[i], LOW);
+    digitalWrite(C[i], HIGH);
+  }
+}
+
+// 清空屏幕信息
+void clear_screen()
+{
+  for (int i = 0; i < 8; i++)
+  {
+    digitalWrite(R[i], LOW);
+    digitalWrite(C[i], HIGH);
+  }
+}
+
+// 打点函数 Direct 0 - 0°， 1 - 90°， 2 - 180°， 3 - 270°
+void displaydot(uint8_t Map[][8], unsigned long Set_time = 1000, uint8_t Direct = 0)
+{
+  unsigned long Old_Time = millis();
+  do
+  {
+    for (uint8_t i = 0; i < 8; i++)
+    {
+      clear_screen();
+      digitalWrite(R[i], HIGH);
+      for (uint8_t j = 0; j < 8 ; j++)
+      {
+        switch (Direct)
+        {
+          case 0: digitalWrite(C[j], !(Map[i][j]));
+            break;
+          case 1: digitalWrite(C[j], !(Map[7-j][i]));
+            break;
+          case 2: digitalWrite(C[j], !(Map[7-i][7-j]));
+            break;
+          case 3: digitalWrite(C[j], !(Map[j][7-i]));
+            break;
+        }
+      }
+      delay(2); //每行延迟2毫秒
+    }
+  } while (millis() - Old_Time < Set_time);  //判断是否到点儿了
+  Old_Time = millis(); //更新时间
+}
+
+void loop() {
+  displaydot(Map4, 200, 0);
+  delay(10);
+  displaydot(Map5, 200, 0);
+  delay(10);
+}
+
