@@ -5,5 +5,6 @@ int main()
     { 
       printf("hello jacky\n");
     }
+    printf("the program is running over!\n");
     return 0;
 }
